@@ -73,13 +73,38 @@
     closeAuth();
     activateProfile(name);
   }
-  function handleSignup(){
-    const first=document.querySelector('#panelSignup input[placeholder="Alex"]').value.trim();
-    const last=document.querySelector('#panelSignup input[placeholder="Johnson"]').value.trim();
-    const name=(first||'User')+(last?' '+last:'');
-    closeAuth();
-    activateProfile(name);
+ async function handleSignup(){
+  const first = document.querySelector('#panelSignup input[placeholder="Alex"]').value.trim();
+  const last = document.querySelector('#panelSignup input[placeholder="Johnson"]').value.trim();
+  const email = document.querySelector('#panelSignup input[type="email"]').value.trim();
+  const password = document.querySelector('#panelSignup input[type="password"]').value.trim();
+
+  const name = (first || 'User') + (last ? ' ' + last : '');
+
+  try {
+    const res = await fetch("http://localhost:5000/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name, email, password })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("Signup successful!");
+      closeAuth();
+      activateProfile(name);
+    } else {
+      alert(data.error || "Signup failed");
+    }
+
+  } catch (err) {
+    alert("Server error");
+    console.error(err);
   }
+}
 
   // ── GOOGLE OAUTH ──
   // Replace 'YOUR_GOOGLE_CLIENT_ID' with your real Client ID from Google Cloud Console
