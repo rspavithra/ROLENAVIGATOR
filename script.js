@@ -82,7 +82,7 @@
   const name = (first || 'User') + (last ? ' ' + last : '');
 
   try {
-    const res = await fetch("http://localhost:5000/signup", {
+    const res = await fetch("/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -97,7 +97,7 @@
       closeAuth();
       activateProfile(name);
     } else {
-      alert(data.error || "Signup failed");
+      alert(data.message || data.error || "Signup failed");
     }
 
   } catch (err) {
